@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login Error</title>
+    <style>
+        /* Style for the login error message */
+.error-box {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-top: 100px;
+}
+
+.error-box h2 {
+    color: #ff0000;
+}
+
+.error-box p {
+    font-size: 16px;
+}
+
+/* Style for the "Back to Login" button */
+.back-to-login {
+    margin-top: 20px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #6faff5;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="error-box">
+        <h2>Login Error</h2>
+        <p>Invalid Username or Password. Please try again.</p>
+        <div class="back-to-login">
+            <a href="{% url 'signin' %}" class="button">Back to Login</a>
+        </div>
+    </div>
+</body>
+
+</html>

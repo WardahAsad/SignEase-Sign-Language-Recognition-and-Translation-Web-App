@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign to Text & Voice Word Translation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+        }
+header {
+    background: linear-gradient(#6d0da4c1, #7d1390d3);
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    height: 30px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+}
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        footer {
+            background: linear-gradient(#6d0da4c1, #7d1390d3);
+            color: white;
+            text-align: center;
+            display: flex;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+        #container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #video-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 450px;
+        }
+        #buttons-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 20px;
+        }
+        button {
+            margin: 10px 0;
+            padding: 15px 25px;
+            font-size: 20px;
+            background: linear-gradient(#78408a, #39509a);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 9px;
+            transition: background-color 0.3s;
+            width: 100%;
+            max-width: 200px;
+            box-shadow: 3px 6px rgb(186, 182, 182);
+            font-weight: bold;
+        }
+        button:hover {     <!-- Me & My-->
+            background-color: #83718e;
+            width:105%;
+            font-size:20px;
+            background: linear-gradient(#cb8fc7,#8899d2);
+            color: black;
+            border-radius: 20px;
+            transform: scale(1.1);
+            cursor: pointer;
+          }
+        #translationOutput {
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #text-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 350px;
+        }
+        #translatedText {
+            width: 100%;
+            max-width: 350px;
+            height: 200px;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid black;
+            border-radius: 5px;
+            resize: none;
+            background-color: #f3e8fa;
+            margin-bottom: 10px;
+        }
+        #pronounceButton {
+            width: 100%;
+            max-width: 350px;
+        }
+        #video-container1 {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 250px; /* Decreased max-width for smaller video container */
+        }
+        #videoElement {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" id="user-auth-status" value="{{ user.is_authenticated }}" />
+    {% if user.is_authenticated %}
+    <header>
+        <h1>Sign to Text & Voice Word Translation</h1>
+    </header>
+    <main>
+        <div id="container">
+            <div id="video-container">
+                <div style="position: relative; width: 100%; height: 100%;">
+                    <img id="video_feed_word"  src="https://play-lh.googleusercontent.com/2HvFDovrzfQNVydqZHSOo0eo9TUdmVv_8IZm7giVDwVFJ-r3SXV02QI0I0c6WVudbV1U" style="border-radius: 10%; border-radius: 10%; box-shadow: 0 0 20px rgba(0, 0, 0, 0.9); margin-top:20px" width="460" height="450">
+                    <div id="countdownDisplay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 60px; color: black; font-weight: bold;"></div>
+                </div>
+            </div>
+            <div id="buttons-container">
+                <button class="btnClass" id="recordButton">Start</button>
+                <button class="btnClass" id="stopButton" style="display: none;">Stop</button>
+            </div>
+            <div id="text-container">
+                <div id="translationOutput">Text Message</div>
+                <textarea id="translatedText" placeholder="Your Text Message Here" readonly></textarea>
+                <button style=" width: auto; margin-left:10px" class="btnClass" id="pronounceButton">Play Audio</button>
+            </div>
+            <div id="video-container1">
+                <video style="width:150px;" id="videoElement" autoplay poster="https://cdn.pixabay.com/animation/2023/10/10/13/26/13-26-45-476_512.gif"></video>
+            </div>
+        </div>
+    </main>
+    {% else %}
+    <div id="login-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 999; text-align: center; padding-top: 20%">
+        <div>
+            <p>Please login to access the services.</p>
+            <a href="{% url 'signin' %}" style="text-decoration: none; background-color: #645ab3; color: white; padding: 10px 20px; border-radius: 3px;">Login</a>
+        </div>
+    </div>
+    {% endif %}
+    <footer>
+        <p>&copy; 2024 Sign Translation Project</p>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+         function showLoginPopup() {
+        console.log("Login popup should be shown");
+        $("#login-popup").show();
+    }
+
+    $(document).ready(function() {
+        showLoginPopup();
+    });
+        $(document).ready(function () {
+            // Start Prediction button click event
+            $("#recordButton").click(function () {
+                if (!isStreaming) {
+                    startPrediction();
+                } else {
+                    stopPrediction();
+                }
+            });
+
+            // Stop Prediction button click event
+            $("#stopButton").click(function () {
+                if (isStreaming) {
+                    stopPrediction();
+                }
+            });
+
+            // Pronounce Sentence button click event
+            $("#pronounceButton").click(function () {
+                pronounceSentence();
+                // Show the GIF
+                $("#videoElement").attr("poster", "https://cdn.pixabay.com/animation/2023/10/10/13/26/13-26-45-476_512.gif");
+            });
+        });
+
+        let isStreaming = false;
+        let fetchInterval; // Declare fetchInterval globally
+        let predictedSentence = ""; // Variable to store the predicted sentence
+
+        // Function to start prediction
+        function startPrediction() {
+            console.log("Prediction started...");
+            $("#recordButton").hide();
+            $("#stopButton").show();
+            $("#translatedText").val(""); // Clear the translated text area
+            $("#video_feed_word").removeAttr("src");
+            isStreaming = true;
+
+            // Start countdown timer for 3 seconds
+            startCountdown(3);
+
+            // Start fetching predicted sentence
+            fetchInterval = setInterval(fetchPredictedSentence, 1000);
+
+            // Start video feed
+            $("#video_feed_word").attr("src", "video_feed_word/");
+        }
+
+        // Function to start countdown
+        function startCountdown(duration) {
+            var countdown = duration;
+            var countdownInterval = setInterval(function() {
+                countdown--;
+                console.log("Countdown: " + countdown + " seconds left");
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    $("#countdownDisplay").hide(); // Hide countdown display when not needed
+                    console.log("Countdown finished.");
+                } else {
+                    // Update countdown display
+                    $("#countdownDisplay").text(countdown);
+                }
+            }, 1000); // Update countdown every second (1000 milliseconds)
+        }
+
+        // Function to stop prediction
+        function stopPrediction() {
+            console.log("Prediction stopped...");
+            $("#recordButton").show();
+            $("#stopButton").hide();
+            $("#video_feed_word").attr("src", "https://play-lh.googleusercontent.com/2HvFDovrzfQNVydqZHSOo0eo9TUdmVv_8IZm7giVDwVFJ-r3SXV02QI0I0c6WVudbV1U");
+            isStreaming = false;
+
+            // Stop fetching predicted sentence
+            clearInterval(fetchInterval);
+        }
+
+        // Function to fetch the predicted sentence from the server
+        function fetchPredictedSentence() {
+            $.get("/fetch_predicted_sentence/", function(data) {
+                // Store the predicted sentence locally
+                predictedSentence = data.predicted_sentence;
+                // Update the translated text area with the predicted sentence
+                $("#translatedText").val(predictedSentence);
+            });
+        }
+
+        // Function to pronounce the sentence
+        async function pronounceSentence() {
+            // Create a new speech synthesis utterance with the predicted sentence
+            var utterance = new SpeechSynthesisUtterance(predictedSentence);
+
+            // Pause execution until the TTS engine is ready
+            await new Promise(resolve => {
+                utterance.onend = resolve;
+                window.speechSynthesis.speak(utterance);
+            });
+        }
+
+        // Keydown event listener
+        document.addEventListener("keydown", function(event) {
+            // Check if 's' key is pressed to add a space
+            if (event.key === 's') {
+                fetch('/add_space/', {
+                    method: 'POST',
+                }).then(response => {
+                    // Handle response if needed
+                });
+            }
+
+            // Check if 'd' key is pressed to delete the last letter
+            if (event.key === 'd') {
+                fetch('/delete_letter/', {
+                    method: 'POST',
+                }).then(response => {
+                    // Handle response if needed
+                });
+            }
+        });
+    </script>
+</body>
+</html>

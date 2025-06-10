@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: linear-gradient(to bottom, #4a258f, white, #381b6e);
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #6e42c17e;
+            padding: 20px;
+            border-radius: 10px; 
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
+            width: 350px; 
+            text-align: center;
+            transition: transform 0.3s ease; 
+        }
+        form:hover {
+            transform: scale(1.05); 
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-size: 28px; 
+            color: #000; 
+        }
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-container i {
+            position: absolute;
+            left: 23px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000; 
+        }
+        input {
+            width: calc(100% - 30px);
+            padding: 12px;
+            padding-left: 30px; 
+            margin: 5px 0 15px 0;
+            box-sizing: border-box;
+            border: 2px solid rgb(81, 7, 141);
+            border-radius: 17px; 
+            font-size: 18px; 
+            transition: border-color 0.3s ease; 
+        }
+        input:focus {
+            border-color: #000; 
+        }
+        button {
+            background-color: #4a258f;
+            color: white;
+            padding: 14px 24px; 
+            font-weight: bold;
+            font-size: 20px; 
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; 
+        }
+        button:hover {
+            background-color: #6e42c1af; 
+        }
+    </style>
+</head>
+<body>
+    <form id="signupForm" method="post">
+        <h2>Sign Up</h2>
+        <div class="input-container">
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+        </div>
+        <div class="input-container">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+        </div>
+        <div class="input-container">
+            <i class="fas fa-user"></i>
+            <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+        </div>
+        <div class="input-container">
+            <i class="fas fa-user"></i>
+            <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+        </div>
+        {% csrf_token %}
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            // Fetch form data
+            const formData = new FormData(this);
+
+            // Send the form data to the server
+            fetch("/signup.html", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}", // Add CSRF token header
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirect to the login page upon successful signup
+                    window.location.href = "/signin.html";
+                } else {
+                    // Handle signup failure
+                    alert("Signup failed. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again later.");
+            });
+        });
+    </script>
+</body>
+</html>

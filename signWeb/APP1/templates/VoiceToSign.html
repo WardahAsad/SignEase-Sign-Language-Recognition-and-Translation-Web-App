@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign to Voice Word Translation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+        }
+        header {
+            background: linear-gradient(#6d0da4c1, #7d1390d3);
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            height: 40px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 999;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+            padding-top: 60px;
+        }
+        #container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #text-container {
+            flex: 1;
+            margin-right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #translatedText {
+            width: 100%;
+            height: 300px;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid black;
+            border-radius: 10px;
+            resize: none;
+            background-color: #f3e8fa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 20px;
+            background: linear-gradient(#78408a, #39509a);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 9px;
+            transition: background-color 0.3s;
+            box-shadow: 3px 6px rgb(186, 182, 182);
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        button:hover {
+            background-color: #83718e;
+            font-size: 20px;
+            background: linear-gradient(#cb8fc7,#8899d2);
+            color: black;
+            border-radius: 20px;
+            transform: scale(1.1);
+        }
+        #video-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        footer {
+            background: linear-gradient(#6d0da4c1, #7d1390d3);
+            color: white;
+            text-align: center;
+            display: flex;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Text To Sign Translation</h1>
+    </header>
+    <main>
+        <div id="container">
+            <div id="text-container">
+                <textarea id="translatedText" placeholder="Your Text Message Here"></textarea>
+                <button id="translateButton">Translate</button>
+            </div>
+            <div id="video-container">
+                <video id="video_feed_word" width="460"  height="450" controls style="border-radius: 10%; box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);">
+                    <source id="video_source" src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Sign Translation Project</p>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#translateButton").click(function () {
+                startTranslation();
+            });
+        });
+
+        function startTranslation() {
+            var text = $("#translatedText").val();
+            $.get("/fetch_video_path/", {text: text}, function(data) {
+                if (data.video_path) {
+                    var videoElement = document.getElementById('video_feed_word');
+                    var videoSource = document.getElementById('video_source');
+                    videoSource.src = data.video_path;
+                    videoElement.load();
+                    videoElement.play();
+                } else {
+                    alert("No matching video found.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

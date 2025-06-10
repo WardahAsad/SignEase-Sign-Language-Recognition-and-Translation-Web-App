@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <title>Login Here</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-image: linear-gradient(to bottom, #4a258f, white, #381b6e);
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+form {
+    background-color: #6e42c183;
+    padding: 20px;
+    border-radius: 10px; 
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
+    width: 350px; 
+    text-align: center;
+    transition: transform 0.3s ease; 
+}
+
+form:hover {
+    transform: scale(1.05); 
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 28px; 
+}
+
+label {
+    display: block;
+    margin: 10px 0;
+    font-size: 18px; 
+    font-weight: bold;
+    font-style: italic;
+}
+
+input {
+    width: calc(100% - 16px);
+    padding: 12px; 
+    margin: 5px 0 15px 0;
+    box-sizing: border-box;
+    border: 2px solid rgb(81, 7, 141);
+    border-radius: 17px; 
+    display: inline-block;
+    font-size: 18px; 
+    transition: border-color 0.3s ease; 
+}
+
+input:focus {
+    border-color: #000; 
+}
+
+.password-toggle {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.password-toggle input {
+    width: calc(100% - 40px); 
+    padding-right: 40px; 
+}
+
+.password-toggle i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30px; 
+    cursor: pointer;
+}
+
+.login-button-container {
+    margin-top: 20px; 
+}
+
+button {
+    background-color: #4a258f;
+    color: white;
+    padding: 14px 24px; 
+    font-weight: bold;
+    font-size: 20px; 
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+button:hover {
+    background-color: #6e42c1af; 
+}
+
+.google-button {
+    background-color: rgb(248, 163, 5);
+    color: white;
+    padding: 14px 24px; 
+    font-weight: bold;
+    font-size: 18px; 
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+.google-button:hover {
+    background-color: rgb(241, 192, 101); 
+}
+
+.signup-link {
+    margin-top: 20px; 
+}
+
+.signup-link a {
+    color: #4a258f; 
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease; 
+}
+
+.signup-link a:hover {
+    color: #6e42c1af; 
+}
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 15px; 
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000;
+}
+
+input[type="text"],
+input[type="password"] {
+    padding-left: 30px; 
+    background-color: #fff; 
+    background-position: 10px center; 
+    background-repeat: no-repeat;
+}
+
+
+    </style>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <h1>Login Here</h1>
+        <label for="username">Username:</label>
+        <div class="input-icon">
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" name="username" placeholder="Enter Username" required>
+        </div>
+
+        <label for="password">Password:</label>
+<div class="input-icon">
+    <input type="password" id="password" name="password" placeholder="Enter Password" required>
+    <i class="far fa-eye" onclick="togglePassword()"></i>
+    <i class="fas fa-lock"></i>
+</div>
+
+
+        <div class="login-button-container">
+            <button type="submit">Login</button>
+        </div>
+
+        <div class="login-button-container">
+            <button class="google-button" type="button" onclick="redirectToGoogle()">
+                <i class="fab fa-google"></i> Continue with Google
+            </button>
+        </div>
+
+        <div class="signup-link">
+            <p>Don't have an account? <a href="{% url 'signup' %}">Signup</a></p>
+        </div>
+    </form>
+
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+
+        function redirectToGoogle() {
+            window.location.href = "https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?gsiwebsdk=3&client_id=108380595987-j91sm1alavcdgd81i2655kp8q1lbtvrc.apps.googleusercontent.com&scope=openid%20profile%20email&redirect_uri=storagerelay%3A%2F%2Fhttps%2Fwordpress.com%3Fid%3Dauth691780&prompt=consent&access_type=offline&response_type=code&include_granted_scopes=true&enable_granular_consent=true&service=lso&o2v=2&theme=glif&flowName=GeneralOAuthFlow";
+        }
+    </script>
+</body>
+</html>

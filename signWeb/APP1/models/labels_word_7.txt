@@ -1,0 +1,7 @@
+0 Alert
+1 Bad
+2 Careful
+3 Good
+4 Heavy
+5 No
+6 Yes
