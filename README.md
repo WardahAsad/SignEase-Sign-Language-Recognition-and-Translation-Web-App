@@ -19,7 +19,6 @@ SignEase is a web-based application designed to help bridge the communication ga
 ![image](https://github.com/user-attachments/assets/acc138e8-f4bb-49c9-9099-c07a2822645a)
 ![image](https://github.com/user-attachments/assets/47a49eb9-f7ad-466f-83d8-e82de5cb5741)
 ![image](https://github.com/user-attachments/assets/52353c77-193f-45cd-ad8d-317da71f5eb2)
-![image](https://github.com/user-attachments/assets/55464f29-4301-4c66-bf6c-2d1da017e04f)
 ![image](https://github.com/user-attachments/assets/1aa78a17-059b-409a-b506-94508d68bb3f)
 
 ---
