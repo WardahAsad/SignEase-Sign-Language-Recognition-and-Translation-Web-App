@@ -1,4 +1,4 @@
-# SignEase - Sign Language Recognition and Translation Web App ✋🧠🗣️
+# SignEase - Sign Language Recognition and Translation Web App🗣️
 
 SignEase is a web-based application designed to help bridge the communication gap between deaf/mute individuals and the hearing community. It uses **computer vision and deep learning** to recognize Pakistani Sign Language (PSL) gestures in real-time and translate them into text.
 
